@@ -5,7 +5,7 @@
 #include <chrono>
 using namespace std;
 
-void metodoInsercion(int arr[], int tamano) {
+void Insercion(int arr[], int tamano) {
     for (int i = 1; i < tamano; i++) {
         int clave = arr[i];
         int j = i - 1;
@@ -17,7 +17,7 @@ void metodoInsercion(int arr[], int tamano) {
     }
 }
 
-void metodoBurbuja(int arr[], int tamano) {
+void Burbuja(int arr[], int tamano) {
     for (int i = 0; i < tamano - 1; i++) {
         for (int j = 0; j < tamano - i - 1; j++) {
             if (arr[j] > arr[j + 1]) {
@@ -27,7 +27,7 @@ void metodoBurbuja(int arr[], int tamano) {
     }
 }
 
-void metodoSeleccion(int arr[], int tamano) {
+void Seleccion(int arr[], int tamano) {
     for (int i = 0; i < tamano - 1; i++) {
         int minIdx = i;
         for (int j = i + 1; j < tamano; j++) {
@@ -41,7 +41,7 @@ void metodoSeleccion(int arr[], int tamano) {
     }
 }
 
-void combinar(int arr[], int inicio, int medio, int fin) {
+void Combinacion(int arr[], int inicio, int medio, int fin) {
     int n1 = medio - inicio + 1;
     int n2 = fin - medio;
     int izq[n1], der[n2];
@@ -59,7 +59,7 @@ void combinar(int arr[], int inicio, int medio, int fin) {
     while (j < n2) arr[k++] = der[j++];
 }
 
-void metodoMerge(int arr[], int inicio, int fin) {
+void Union(int arr[], int inicio, int fin) {
     if (inicio < fin) {
         int medio = inicio + (fin - inicio) / 2;
         metodoMerge(arr, inicio, medio);
@@ -68,7 +68,7 @@ void metodoMerge(int arr[], int inicio, int fin) {
     }
 }
 
-void metodoMergeWrapper(int arr[], int tamano) {
+void MergeWrapper(int arr[], int tamano) {
     metodoMerge(arr, 0, tamano - 1);
 }
 
@@ -84,7 +84,7 @@ int particionar(int arr[], int bajo, int alto) {
     return i + 1;
 }
 
-void metodoRapido(int arr[], int bajo, int alto) {
+void Rapido(int arr[], int bajo, int alto) {
     if (bajo < alto) {
         int pivote = particionar(arr, bajo, alto);
         metodoRapido(arr, bajo, pivote - 1);
@@ -92,7 +92,7 @@ void metodoRapido(int arr[], int bajo, int alto) {
     }
 }
 
-void metodoRapidoWrapper(int arr[], int tamano) {
+void RapidoWrapper(int arr[], int tamano) {
     metodoRapido(arr, 0, tamano - 1);
 }
 
@@ -118,7 +118,7 @@ void metodoMonticulo(int arr[], int tamano) {
     }
 }
 
-void metodoShell(int arr[], int tamano) {
+void Shell(int arr[], int tamano) {
     for (int gap = tamano / 2; gap > 0; gap /= 2) {
         for (int i = gap; i < tamano; i++) {
             int temp = arr[i];
@@ -131,7 +131,7 @@ void metodoShell(int arr[], int tamano) {
     }
 }
 
-void medirTiempo(void (*algoritmoOrdenamiento)(int[], int), const string &nombreArchivo) {
+void Tiempo(void (*algoritmoOrdenamiento)(int[], int), const string &nombreArchivo) {
     vector<double> tiempos(1000);
     srand(time(0));
 
@@ -156,12 +156,12 @@ void medirTiempo(void (*algoritmoOrdenamiento)(int[], int), const string &nombre
 }
 
 int main() {
-    medirTiempo(metodoInsercion, "insercion.csv");
-    medirTiempo(metodoBurbuja, "burbuja.csv");
-    medirTiempo(metodoSeleccion, "seleccion.csv");
-    medirTiempo(metodoShell, "shell.csv");
-    medirTiempo(metodoMergeWrapper, "merge.csv");
-    medirTiempo(metodoRapidoWrapper, "rapido.csv");
-    medirTiempo(metodoMonticulo, "monticulo.csv");
+    medirTiempo(Insercion, "insercion.csv");
+    medirTiempo(Burbuja, "burbuja.csv");
+    medirTiempo(Seleccion, "seleccion.csv");
+    medirTiempo(Shell, "shell.csv");
+    medirTiempo(Union, "merge.csv");
+    medirTiempo(RapidoWrapper, "rapido.csv");
+    medirTiempo(Monticulo, "monticulo.csv");
     return 0;
 }

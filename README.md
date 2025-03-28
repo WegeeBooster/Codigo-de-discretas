@@ -11,8 +11,6 @@ Este codigo implementa y compara experimentalmente el rendimiento de siete algor
 - Sistema operativo: Windows/Linux/macOS
 - Python 3.x (opcional, para visualización de gráficos)
 
-# Compilación y Ejecución
-
 # Compilación
 g++ main.cpp -o sorting_analysis -std=c++11 -O2
 

@@ -1,5 +1,8 @@
 # Codigo-de-discretas
-Codigo de ordenamientos para matematicas discretas
+Codigo de ordenamientos para matematicas discretas con el maestro Jesus Francisco
+
+# Autor
+Jorge Alejandro Montaño Gutierrez
 
 # Descripción
 Este codigo implementa y compara experimentalmente el rendimiento de siete algoritmos de ordenamiento clásicos en C++. El análisis incluye mediciones de tiempo para evaluar su eficiencia con diferentes conjuntos de datos aleatorios.

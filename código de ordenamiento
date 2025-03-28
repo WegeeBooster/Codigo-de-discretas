@@ -1,0 +1,167 @@
+#include <iostream>
+#include <fstream>
+#include <vector>
+#include <cstdlib>
+#include <chrono>
+using namespace std;
+
+void metodoInsercion(int arr[], int tamano) {
+    for (int i = 1; i < tamano; i++) {
+        int clave = arr[i];
+        int j = i - 1;
+        while (j >= 0 && arr[j] > clave) {
+            arr[j + 1] = arr[j];
+            j--;
+        }
+        arr[j + 1] = clave;
+    }
+}
+
+void metodoBurbuja(int arr[], int tamano) {
+    for (int i = 0; i < tamano - 1; i++) {
+        for (int j = 0; j < tamano - i - 1; j++) {
+            if (arr[j] > arr[j + 1]) {
+                swap(arr[j], arr[j + 1]);
+            }
+        }
+    }
+}
+
+void metodoSeleccion(int arr[], int tamano) {
+    for (int i = 0; i < tamano - 1; i++) {
+        int minIdx = i;
+        for (int j = i + 1; j < tamano; j++) {
+            if (arr[j] < arr[minIdx]) {
+                minIdx = j;
+            }
+        }
+        if (minIdx != i) {
+            swap(arr[i], arr[minIdx]);
+        }
+    }
+}
+
+void combinar(int arr[], int inicio, int medio, int fin) {
+    int n1 = medio - inicio + 1;
+    int n2 = fin - medio;
+    int izq[n1], der[n2];
+
+    for (int i = 0; i < n1; i++) izq[i] = arr[inicio + i];
+    for (int j = 0; j < n2; j++) der[j] = arr[medio + 1 + j];
+
+    int i = 0, j = 0, k = inicio;
+    while (i < n1 && j < n2) {
+        if (izq[i] <= der[j]) arr[k++] = izq[i++];
+        else arr[k++] = der[j++];
+    }
+
+    while (i < n1) arr[k++] = izq[i++];
+    while (j < n2) arr[k++] = der[j++];
+}
+
+void metodoMerge(int arr[], int inicio, int fin) {
+    if (inicio < fin) {
+        int medio = inicio + (fin - inicio) / 2;
+        metodoMerge(arr, inicio, medio);
+        metodoMerge(arr, medio + 1, fin);
+        combinar(arr, inicio, medio, fin);
+    }
+}
+
+void metodoMergeWrapper(int arr[], int tamano) {
+    metodoMerge(arr, 0, tamano - 1);
+}
+
+int particionar(int arr[], int bajo, int alto) {
+    int pivote = arr[alto];
+    int i = bajo - 1;
+    for (int j = bajo; j < alto; j++) {
+        if (arr[j] <= pivote) {
+            swap(arr[++i], arr[j]);
+        }
+    }
+    swap(arr[i + 1], arr[alto]);
+    return i + 1;
+}
+
+void metodoRapido(int arr[], int bajo, int alto) {
+    if (bajo < alto) {
+        int pivote = particionar(arr, bajo, alto);
+        metodoRapido(arr, bajo, pivote - 1);
+        metodoRapido(arr, pivote + 1, alto);
+    }
+}
+
+void metodoRapidoWrapper(int arr[], int tamano) {
+    metodoRapido(arr, 0, tamano - 1);
+}
+
+void ajustarMonticulo(int arr[], int tamano, int i) {
+    int mayor = i;
+    int izq = 2 * i + 1;
+    int der = 2 * i + 2;
+
+    if (izq < tamano && arr[izq] > arr[mayor]) mayor = izq;
+    if (der < tamano && arr[der] > arr[mayor]) mayor = der;
+
+    if (mayor != i) {
+        swap(arr[i], arr[mayor]);
+        ajustarMonticulo(arr, tamano, mayor);
+    }
+}
+
+void metodoMonticulo(int arr[], int tamano) {
+    for (int i = tamano / 2 - 1; i >= 0; i--) ajustarMonticulo(arr, tamano, i);
+    for (int i = tamano - 1; i > 0; i--) {
+        swap(arr[0], arr[i]);
+        ajustarMonticulo(arr, i, 0);
+    }
+}
+
+void metodoShell(int arr[], int tamano) {
+    for (int gap = tamano / 2; gap > 0; gap /= 2) {
+        for (int i = gap; i < tamano; i++) {
+            int temp = arr[i];
+            int j;
+            for (j = i; j >= gap && arr[j - gap] > temp; j -= gap) {
+                arr[j] = arr[j - gap];
+            }
+            arr[j] = temp;
+        }
+    }
+}
+
+void medirTiempo(void (*algoritmoOrdenamiento)(int[], int), const string &nombreArchivo) {
+    vector<double> tiempos(1000);
+    srand(time(0));
+
+    for (int i = 0; i < 1000; i++) {
+        int datos[100];
+        for (int j = 0; j < 100; j++) {
+            datos[j] = rand() % 1000 + 1;
+        }
+
+        auto inicio = chrono::high_resolution_clock::now();
+        algoritmoOrdenamiento(datos, 100);
+        auto fin = chrono::high_resolution_clock::now();
+
+        tiempos[i] = chrono::duration_cast<chrono::nanoseconds>(fin - inicio).count();
+    }
+
+    ofstream archivo(nombreArchivo);
+    if (archivo.is_open()) {
+        for (double t : tiempos) archivo << t << endl;
+        archivo.close();
+    }
+}
+
+int main() {
+    medirTiempo(metodoInsercion, "insercion.csv");
+    medirTiempo(metodoBurbuja, "burbuja.csv");
+    medirTiempo(metodoSeleccion, "seleccion.csv");
+    medirTiempo(metodoShell, "shell.csv");
+    medirTiempo(metodoMergeWrapper, "merge.csv");
+    medirTiempo(metodoRapidoWrapper, "rapido.csv");
+    medirTiempo(metodoMonticulo, "monticulo.csv");
+    return 0;
+}

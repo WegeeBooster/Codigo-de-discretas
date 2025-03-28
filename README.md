@@ -29,8 +29,8 @@ python3 plot_results.py
 2. **Burbuja** (`bubble_sort.cpp`)
 3. **Seleccion** (`selection_sort.cpp`)
 4. **Union** (`merge_sort.cpp`)
-5. **Rapida** (`quick_sort.cpp`)
-6. **Monticulos** (`heap_sort.cpp`)
+5. **RapidoWrapper** (`quick_sort.cpp`)
+6. **Monticulo** (`heap_sort.cpp`)
 7. **Shell** (`shell_sort.cpp`)
 
 # Conclusiones
